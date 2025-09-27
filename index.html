@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Inspirator</title>
+  <title>Inspirator — by SteveAI</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3e8ff;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f9f9fb;
       color: #111;
       display: flex;
       justify-content: center;
@@ -16,39 +16,58 @@
       height: 100vh;
       padding: 20px;
     }
+    .wrapper {
+      text-align: center;
+      width: 100%;
+    }
+    .brand {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #b40aFF;
+      letter-spacing: 1px;
+    }
     .card {
       background: #fff;
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      max-width: 600px;
+      border-radius: 20px;
+      padding: 40px 30px;
+      margin: auto;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      max-width: 700px;
       width: 100%;
-      text-align: center;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
     }
     blockquote {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 500;
       margin: 0;
+      line-height: 1.5;
+      color: #222;
     }
     .author {
-      margin-top: 15px;
-      font-size: 15px;
+      margin-top: 20px;
+      font-size: 16px;
       color: #555;
+      font-style: italic;
     }
     .controls {
-      margin-top: 20px;
+      margin-top: 30px;
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     .btn {
-      padding: 10px 16px;
+      padding: 12px 18px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      transition: background 0.2s;
+      transition: all 0.25s;
+      font-size: 14px;
     }
     .primary {
       background: #b40aFF;
@@ -56,24 +75,48 @@
     }
     .primary:hover {
       background: #7a4bd9;
+      transform: scale(1.05);
     }
     .share {
       background: #eee;
       color: #333;
     }
+    .share:hover {
+      background: #ddd;
+      transform: scale(1.05);
+    }
+    .copy {
+      background: #f0f9ff;
+      color: #0077cc;
+    }
+    .copy:hover {
+      background: #e0f2ff;
+      transform: scale(1.05);
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #777;
+    }
     @media (max-width: 600px) {
-      blockquote { font-size: 18px; }
+      blockquote { font-size: 20px; }
+      .author { font-size: 14px; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <blockquote id="quoteText">Loading quote…</blockquote>
-    <div class="author" id="quoteAuthor"></div>
-    <div class="controls">
-      <button id="newQuoteBtn" class="btn primary">Get a New Quote</button>
-      <button id="shareBtn" class="btn share">Share on X</button>
+  <div class="wrapper">
+    <div class="brand">✨ Inspirator by SteveAI ✨</div>
+    <div class="card">
+      <blockquote id="quoteText">Loading quote…</blockquote>
+      <div class="author" id="quoteAuthor"></div>
+      <div class="controls">
+        <button id="newQuoteBtn" class="btn primary">Get a New Quote</button>
+        <button id="shareBtn" class="btn share">Share on X</button>
+        <button id="copyBtn" class="btn copy">Copy Quote</button>
+      </div>
     </div>
+    <div class="footer">Made with ❤️ by SteveAI — Empowering minds with inspiration</div>
   </div>
 
   <script>
@@ -82,6 +125,7 @@
     const quoteAuthor = document.getElementById("quoteAuthor");
     const newQuoteBtn = document.getElementById("newQuoteBtn");
     const shareBtn = document.getElementById("shareBtn");
+    const copyBtn = document.getElementById("copyBtn");
 
     async function loadQuotes() {
       try {
@@ -91,7 +135,6 @@
         showRandomQuote();
       } catch (e) {
         console.error(e);
-        // fallback list if quotes.json is missing
         quotes = [
           { content: "Stay hungry, stay foolish.", author: "Steve Jobs" },
           { content: "The best way to predict the future is to invent it.", author: "Alan Kay" },
@@ -114,8 +157,17 @@
       window.open(url, "_blank");
     }
 
+    function copyQuote() {
+      const text = `${quoteText.textContent} ${quoteAuthor.textContent}`;
+      navigator.clipboard.writeText(text.trim()).then(() => {
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => copyBtn.textContent = "Copy Quote", 2000);
+      });
+    }
+
     newQuoteBtn.addEventListener("click", showRandomQuote);
     shareBtn.addEventListener("click", shareQuote);
+    copyBtn.addEventListener("click", copyQuote);
 
     loadQuotes();
   </script>
